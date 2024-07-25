@@ -1,0 +1,398 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  能不能简述一下 Dealloc 的实现机制 - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>能不能简述一下 Dealloc 的实现机制</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2024/07/24</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p>Dealloc 的实现机制是内容管理部分的重点，把这个知识点弄明白，对于全方位的理解内存管理的只是很有 必要。</p>
+<p>**1.Dealloc 调用流程 **</p>
+<ul>
+<li>
+<p>1.首先调用 <code>_objc_rootDealloc() </code></p>
+</li>
+<li>
+<p>2.接下来调用 <code>rootDealloc() </code></p>
+</li>
+<li>
+<p>3.这时候会判断是否可以被释放，判断的依据主要有 5 个，判断是否有以上五种情况</p>
+<ul>
+<li><code>NONPointer_ISA</code></li>
+<li><code>weakly_reference</code></li>
+<li><code>has_assoc</code></li>
+<li><code>has_cxx_dtor</code></li>
+<li><code>has_sidetable_rc</code></li>
+</ul>
+</li>
+<li>
+<p>4-1. 如果是<code>isTaggedPointer</code>，就直接返回了</p>
+</li>
+<li>
+<p>4-2. 如果有以上五中任意一种，将会调用 <code>object_dispose()</code>方法，做下一步的处理。</p>
+</li>
+<li>
+<p>4-2.如果没有之前五种情况的任意一种，则可以执行释放操作，<code>C 函数的 free()</code>。</p>
+</li>
+<li>
+<p>5.执行完毕。</p>
+</li>
+</ul>
+<p><strong>2.object_dispose() 调用流程</strong>。</p>
+<ul>
+<li>
+<p>1.直接调用 <code>objc_destructInstance()</code>。</p>
+</li>
+<li>
+<p>2.之后调用 C 函数的 free()。</p>
+</li>
+</ul>
+<p><strong>3.<code>objc_destructInstance()</code> 调用流程</strong></p>
+<ul>
+<li>
+<p>1.先判断 <code>hasCxxDtor</code>，如果有 C++ 的相关内容，要调用 <code>object_cxxDestruct() </code>，销毁 C++ 相关的内容。</p>
+</li>
+<li>
+<p>2.再判断 <code>hasAssocitatedObjects</code>，如果有的话，要调用 <code>object_remove_associations()</code>， 销毁关联对象的一系列操作。</p>
+</li>
+<li>
+<p>3.然后调用 <code>clearDeallocating()</code>。</p>
+</li>
+<li>
+<p>4.执行完毕。</p>
+</li>
+</ul>
+<p><strong>4.<code>clearDeallocating()</code> 调用流程</strong>。</p>
+<ul>
+<li>1.先执行 <code>sideTable_clearDellocating()</code>。</li>
+<li>2.再执行 <code>weak_clear_no_lock</code>,在这一步骤中，会将指向该对象的弱引用指针置为 <code>nil</code>。</li>
+<li>3.接下来执行 <code>table.refcnts.eraser()</code>，从引用计数表中擦除该对象的引用计数。</li>
+<li>4.至此为止，<code>Dealloc</code> 的执行流程结束。</li>
+</ul>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="17218099761893.html" 
+          title="Previous Post: HTTPS和HTTP的区别">&laquo; HTTPS和HTTP的区别</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="17218099176424.html" 
+          title="Next Post: 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？">分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

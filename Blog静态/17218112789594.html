@@ -1,0 +1,420 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  property和属性修饰符 - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>property和属性修饰符</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2024/07/24</span>
+
+          
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p><strong>@property的本质</strong>是 <code>ivar(实例变量)</code> + <code>setter</code> + <code>getter</code>.</p>
+<p><strong>我们每次增加一个属性时内部都做了什么：</strong></p>
+<ul>
+<li>
+<p>1.系统都会在 <code>ivar_list</code> 中添加一个成员变量的描述；</p>
+</li>
+<li>
+<p>2.在 <code>method_list</code> 中增加 <code>setter</code> 与 <code>getter</code> 方法的描述；</p>
+</li>
+<li>
+<p>3.在属性列表中增加一个属性的描述；</p>
+</li>
+<li>
+<p>4.然后计算该属性在对象中的偏移量；</p>
+</li>
+<li>
+<p>5.给出 <code>setter</code> 与 <code>getter</code> 方法对应的实现，在 <code>setter</code> 方法中从偏移量的位置开始赋值，在 <code>getter</code> 方法中从偏移量开始取值，为了能够读取正确字节数，系统对象偏移量的指针类型进行了类型强转。</p>
+</li>
+</ul>
+<p><strong>修饰符：</strong></p>
+<ul>
+<li>
+<p><strong>MRC下：</strong> <code>assign、retain、copy、readwrite、readonly、nonatomic、atomic</code>等。</p>
+</li>
+<li>
+<p><strong>ARC下：</strong><code>assign、strong、weak、copy、readwrite、readonly、nonatomic、atomic、nonnull、nullable、null_resettable、_Null_unspecified</code>等。</p>
+</li>
+</ul>
+<p>下面分别解释</p>
+<ul>
+<li>
+<p><code>assign</code>：用于基本数据类型，不更改引用计数。如果修饰对象(对象在堆需手动释放内存，基本数据类型在栈系统自动释放内存)，会导致对象释放后指针不置为nil 出现野指针。</p>
+</li>
+<li>
+<p><code>retain</code>：和strong一样，释放旧对象，传入的新对象引用计数+1；在MRC中和release成对出现。</p>
+</li>
+<li>
+<p><code>strong</code>：在ARC中使用，告诉系统把这个对象保留在堆上，直到没有指针指向，并且ARC下不需要担心引用计数问题，系统会自动释放。</p>
+</li>
+<li>
+<p><code>weak</code>：在被强引用之前，尽可能的保留，不改变引用计数；weak引用是弱引用，你并没有持有它；它本质上是分配一个不被持有的属性，当引用者被销毁(dealloc)时，weak引用的指针会自动被置为nil。<strong>可以避免循环引用。</strong></p>
+</li>
+<li>
+<p><code>copy</code>：一般用来修饰不可变类型属性字段，如：<code>NSString</code>、<code>NSArray</code>、<code>NSDictionary</code>等。用copy修饰可以防止本对象属性受外界影响，在<code>NSMutableString</code>赋值给<code>NSString</code>时，修改前者 会导致 后者的值跟着变化。还有<code>block</code>也经常使用 copy 修饰符，但是其实在ARC中编译器会自动对block进行copy操作，和strong的效果是一样的。但是在MRC中方法内部的block是在栈区，使用copy可以把它放到堆区。</p>
+</li>
+<li>
+<p><code>readwrite</code>：可以读、写；编译器会自动生成setter/getter方法。</p>
+</li>
+<li>
+<p><code>readonly</code>：只读；会告诉编译器不用自动生成setter方法。属性不能被赋值。</p>
+</li>
+<li>
+<p><code>nonatomic</code>：非原子性访问。用nonatomic意味着可以多线程访问变量，会导致读写线程不安全。但是会提高执行性能。</p>
+</li>
+<li>
+<p><code>atomic</code>：原子性访问。编译器会自动生成互斥锁，对 setter 和 getter 方法进行加锁来保证属性的 赋值和取值 原子性操作是线程安全的，但不包括可变属性的操作和访问。比如我们对数组进行操作，给数组添加对象或者移除对象，是不在atomic的负责范围之内的，所以给被atomic修饰的数组添加对象或者移除对象是没办法保证线程安全的。<strong>原子性访问的缺点是会消耗性能导致执行效率慢。</strong></p>
+</li>
+<li>
+<p><code>nonnull</code>：设置属性或方法参数不能为空，专门用来修饰指针的，不能用于基本数据类型。</p>
+</li>
+<li>
+<p><code>nullable</code>：设置属性或方法参数可以为空。</p>
+</li>
+<li>
+<p><code>null_resettable</code>：设置属性，get方法不能返回为空，set方法可以赋值为空。</p>
+</li>
+<li>
+<p><code>_Null_unspecified</code>：设置属性或方法参数不确定是否为空。</p>
+</li>
+</ul>
+<blockquote>
+<p>后四个属性应该主要就是为了提高开发规范，提示使用的人应该传什么样的值，如果违反了对规范值的要求，就会有警告。</p>
+</blockquote>
+<p><strong>weak修饰的对象释放则自动被置为nil的实现原理：</strong></p>
+<p><code>Runtime</code>维护了一个<code>weak表</code>，存储指向某个对象的所有<code>weak指针</code>。<code>weak表</code>其实是一个<code>hash（哈希）表</code>，<code>Key</code>是所指对象的地址，<code>Value</code>是<code>weak</code>指针的地址数组（这个地址的值是所指对象的地址）。</p>
+<p><strong>weak 的实现原理可以概括一下三步：</strong></p>
+<ul>
+<li>
+<p>1、初始化时：<code>runtime</code>会调用<code>objc_initWeak</code>函数，初始化一个新的weak指针指向对象的地址。</p>
+</li>
+<li>
+<p>2、添加引用时：<code>objc_initWeak</code>函数会调用 <code>objc_storeWeak()</code>函数， <code>objc_storeWeak()</code> 的作用是更新指针指向，创建对应的弱引用表。</p>
+</li>
+<li>
+<p>3、释放时，调用<code>clearDeallocating</code>函数。<code>clearDeallocating</code>函数首先根据对象地址获取所有<code>weak</code>指针地址的数组，然后遍历这个数组把其中的数据设为<code>nil</code>，最后把这个entry从weak表中删除，最后清理对象的记录。</p>
+</li>
+</ul>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="17218113068592.html" 
+          title="Previous Post: 成员变量`ivar`和属性`property`的区别，以及不同关键字的作用">&laquo; 成员变量`ivar`和属性`property`的区别，以及不同关键字的作用</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="17218112314212.html" 
+          title="Next Post: OC数据类型">OC数据类型 &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

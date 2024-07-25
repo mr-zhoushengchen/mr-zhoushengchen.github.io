@@ -1,0 +1,456 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  runloop - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>runloop</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2024/07/24</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <blockquote>
+<p><code>runloop</code>：通过系统内部维护的循环进行事件/消息管理的一个对象。runloop实际上就是一个<code>do...while</code>循环，有任务时开始，无任务时休眠。</p>
+</blockquote>
+<p><strong>其本质是通过<code>mach_msg()</code>函数接收、发送消息。</strong></p>
+<p><strong>RunLoop 与线程的关系：</strong></p>
+<ul>
+<li>
+<ol>
+<li><code>RunLoop</code>的作用就是来管理线程的，当线程的<code>RunLoop</code>开启后，线程就会在执行完任务后，处于休眠状态，随时等待接受新的任务，不会退出。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>只有主线程的<code>RunLoop</code>是默认开启的，其他线程的<code>RunLoop</code>需要手动开启。所以当程序开启后，主线程会一直运行，不会退出。</li>
+</ol>
+</li>
+</ul>
+<p><strong>runloop 事件循环机制内部流程</strong></p>
+<p><img src="media/17218115915749/17218116018899.png" alt="" /></p>
+<p><strong>RunLoop主要涉及五个类：</strong></p>
+<p><code>CFRunLoop</code>：RunLoop对象、</p>
+<p><code>CFRunLoopMode</code>：五种RunLoop运行模式、</p>
+<p><code>CFRunLoopSource</code>：输入源/事件源，包括<code>Source0</code> 和 <code>Source1</code></p>
+<p><code>CFRunLoopTimer</code>：定时源，就是NSTimer、</p>
+<p><code>CFRunLoopObserver</code>：观察者，用来监听RunLoop。</p>
+<ul>
+<li>
+<ol>
+<li><code>CFRunLoop</code>：<strong>RunLoop对象</strong></li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li><code>CFRunLoopMode</code>：<strong>RunLoop运行模式，有五种：</strong></li>
+</ol>
+<ul>
+<li>
+<p><code>kCFRunLoopDefaultMode</code>：默认的运行模式，通常主线程是在这个 Mode 下运行的。</p>
+</li>
+<li>
+<p><code>UITrackingRunLoopMode</code>：界面跟踪 Mode，用于 ScrollView 追踪触摸滑动，保证界面滑动时不受其他 Mode 影响。</p>
+</li>
+<li>
+<p><code>UIInitializationRunLoopMode</code>：在刚启动 App 时第进入的第一个 Mode，启动完成后就不再使用。</p>
+</li>
+<li>
+<p><code>GSEventReceiveRunLoopMode</code>：接受系统事件的内部 Mode，通常用不到。</p>
+</li>
+<li>
+<p><code>kCFRunLoopCommonModes</code>：是一个伪模式，可以在标记为CommonModes的模式下运行，RunLoop会自动将<code>_commonModeItems</code>里的 <code>Source</code>、<code>Observer</code>、<code>Timer</code> 同步到具有此标记的Mode里。</p>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p><code>CFRunLoopSource</code>：<strong>输入源/事件源，包括Source0 和 Source1两种：</strong></p>
+<ul>
+<li>
+<p><code>Source1</code>：基于mach_Port，处理来自系统内核或其它进程的事件，比如点击手机屏幕。</p>
+</li>
+<li>
+<p><code>Source0 </code>：非基于Port的处理事件，也就是应用层事件，需要手动标记为待处理和手动唤醒RunLoop。</p>
+</li>
+<li>
+<p>简单举例：一个APP在前台静止，用户点击APP界面，屏幕表面的事件会先包装成<code>Event</code>告诉<code>source1(mach_port)</code>，<code>source1</code>唤醒<code>RunLoop</code>将事件<code>Event</code>分发给<code>source0</code>，由<code>source0</code>来处理。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>CFRunLoopTimer</code>：<strong>定时源</strong>，就是NSTimer。在预设的时间点唤醒RunLoop执行回调。因为它是基于RunLoop的，因此它不是实时的（就是NSTimer 是不准确的。 因为RunLoop只负责分发源的消息。如果线程当前正在处理繁重的任务，就有可能导致Timer本次延时，或者少执行一次）。</p>
+</li>
+<li>
+<p><code>CFRunLoopObserver</code>：<strong>观察者，用来监听以下时间点：CFRunLoopActivity</strong></p>
+<ul>
+<li>
+<p><code>kCFRunLoopEntry</code>：RunLoop准备启动</p>
+</li>
+<li>
+<p><code>kCFRunLoopBeforeTimers</code>：RunLoop将要处理一些Timer相关事件</p>
+</li>
+<li>
+<p><code>kCFRunLoopBeforeSources</code>：RunLoop将要处理一些Source事件</p>
+</li>
+<li>
+<p><code>kCFRunLoopBeforeWaiting</code>：RunLoop将要进行休眠状态,即将由用户态切换到内核态</p>
+</li>
+<li>
+<p><code>kCFRunLoopAfterWaiting</code>：RunLoop被唤醒，即从内核态切换到用户态后</p>
+</li>
+<li>
+<p><code>kCFRunLoopExit</code>：RunLoop退出</p>
+</li>
+<li>
+<p><code>kCFRunLoopAllActivities</code>：监听所有状态</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>各数据结构之间的联系：</strong></p>
+<ul>
+<li>
+<p>1：<code>Runloop</code>和<code>线程</code>是<strong>一对一</strong>的关系</p>
+</li>
+<li>
+<p>2：<code>Runloop</code>和<code>RunloopMode</code>是<strong>一对多</strong>的关系</p>
+</li>
+<li>
+<p>3：<code>RunloopMode</code>和<code>RunloopSource</code>是<strong>一对多</strong>的关系</p>
+</li>
+<li>
+<p>4：<code>RunloopMode</code>和<code>RunloopTimer</code>是<strong>一对多</strong>的关系</p>
+</li>
+<li>
+<p>5：<code>RunloopMode</code>和<code>RunloopObserver</code>是<strong>一对多</strong>的关系</p>
+</li>
+</ul>
+<p><strong>为什么 main 函数能够保持一直存在且不退出？</strong></p>
+<blockquote>
+<p>在 main 函数内部会调用 <code>UIApplicationMain</code> 这样一个函数，而在<code>UIApplicationMain</code>内部会启动主线程的 <code>runloop</code>，可以做到有消息处理时，能够迅速从<strong>内核态到用户态</strong>的切换，立刻唤醒处理，而没有消息处理时通过<strong>用户态到内核态</strong>的切换进入等待状态，<strong>避免资源占用</strong>。<strong>因此 main 函数能够一直存在且不退出</strong>。</p>
+</blockquote>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="17218116241379.html" 
+          title="Previous Post: runtime">&laquo; runtime</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="17218115735673.html" 
+          title="Next Post: 事件传递和响应机制">事件传递和响应机制 &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

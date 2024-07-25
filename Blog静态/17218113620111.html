@@ -1,0 +1,397 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  设计模式 - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>设计模式</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2024/07/24</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p><strong>创建型模式：</strong></p>
+<ul>
+<li>
+<p>**单例模式：**在整个应用程序中，共享一份资源。保证在程序运行过程中，一个类只有一个实例，而且该实例只提供一个全局访问点供外界访问，从而方便控制实例个数，节约系统资源。</p>
+<p>**优点是：**提供了对唯一实例的受控访问、可扩展、避免频繁创建销毁对象影响性能。</p>
+<p>**缺点是：**延长了声明周期，一直存在占用内存。如果两个单例循环依赖会造成死锁，所以尽量不去产生单例间的依赖关系。</p>
+</li>
+<li>
+<p>**工厂方法模式：**通过类继承创建抽象产品，创建一种产品，子类化创建者并重载工厂方法以创建新产品。</p>
+</li>
+<li>
+<p>**抽象工厂模式：**通过对象组合创建抽象产品，可以创建多系列产品，必须修改父类的接口才能支持新的产品。</p>
+</li>
+</ul>
+<p><strong>结构型模式：</strong></p>
+<ul>
+<li>**代理模式：**代理用来处理事件的监听和参数传递。<code>@required</code>修饰必须实现这个协议方法方法，<code>@optional</code>修饰是可选实现。使用方法时最好先判断方法是否实现<code>respondsToSelector: </code>，避免找不到方法而崩溃。</li>
+</ul>
+<blockquote>
+<p>**delegate和block、Notification对比优缺点：**delegate和block是一对一通信、block比delegate更加简洁清晰，但是如果通信事件较多时delegate运行成本较低且不易造成循环引用；通知适合一对多通信，代码清晰简单，但问题查找溯源会比较困难，并且注册通知要注意在合适的时间移除，避免对野指针发送消息引起崩溃（**注意：**iOS9之后已经做了弱引用处理不需要移除了，之前版本使用不安全引用__unsafe_unretained是为了兼容旧版本）。</p>
+</blockquote>
+<ul>
+<li>
+<p>**类簇：**见上边 5. 类簇</p>
+</li>
+<li>
+<p>**装饰模式：**在不必改变原类文件和使用继承的情况下，动态地扩展一个对象的功能。如：<strong>分类</strong>。</p>
+</li>
+<li>
+<p>**享元模式：使用共享物件，减少同一类对象的大量创建。如：**UITableviewCell复用。</p>
+</li>
+</ul>
+<p><strong>行为型模式：</strong></p>
+<ul>
+<li>
+<p>**观察者模式：**其本质上是一种<code>发布-订阅</code>模型，用来消除具有不同行为的对象之间的耦合，通过这一模式，不同对象可以协同工作。如：<strong>KVO</strong>。</p>
+</li>
+<li>
+<p><strong>命令模式：<strong>是一种将方法调用封装为对象的设计模式，在iOS中具体实现为</strong>NSInvocation</strong>。下边为<code>NSInvocation</code>的实现代码。</p>
+</li>
+</ul>
+<pre><code class="language-plain_text">- (void)viewDidLoad {
+    NSMethodSignature *signature = [ViewController instanceMethodSignatureForSelector:@selector(sendMessageWithPhone:WithName:)]; // 方法签名：用来获得方法的返回类型和参数类型
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    invocation.target = self; // 目标：接收消息的对象
+    invocation.selector = @selector(sendMessageWithPhone:WithName:); // 选择器：被发送的消息, 方法必须和签名中的方法一致。
+    
+    NSString *phone = @&quot;13512345678&quot;;
+    // 注意：设置参数的索引时不能从0开始，因为0已经被self占用，1已经被_cmd占用
+    [invocation setArgument:&amp;phone atIndex:2]; // 参数：可以添加任意数量的参数。
+    NSString *name = @&quot;Dezi&quot;;
+    [invocation setArgument:&amp;name atIndex:3];
+    /*
+     注：调用invocation的invoke方法，就代表需要执行NSInvocation对象中指定对象的指定方法，并且传递指定的参数
+     */
+    [invocation invoke];
+}
+- (void)sendMessageWithPhone:(NSString*)phone WithName:(NSString*)name {
+    NSLog(@&quot;电话号=%@, 姓名=%@&quot;,phone, name);
+}
+// 电话号=13512345678, 姓名Dezi
+</code></pre>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="17218113793678.html" 
+          title="Previous Post: 架构设计">&laquo; 架构设计</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="17218113284689.html" 
+          title="Next Post: 类簇">类簇 &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

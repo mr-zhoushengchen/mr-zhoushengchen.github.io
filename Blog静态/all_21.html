@@ -1,0 +1,422 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+	$(function(){
+		$('#menu_item_index').addClass('is_active');
+	});
+</script>
+<div class="row">
+	<div class="large-8 medium-8 columns">
+		<div class="markdown-body home-categories">
+		
+			<div class="article">
+                <a class="clearlink" href="17218111899140.html">
+                
+                  <h1>iOS开发中的加密方式</h1>
+                  <div class="a-content">
+                      
+                      <div class="a-content-text">
+                        
+                        	<p>iOS加密相关算法框架：<code>CommonCrypto</code>。</p>
+<p><strong>1:对称加密： <code>DES、3DES、AES</code></strong></p>
+<ul>
+<li>
+<p>加密和解密使用同一个密钥。</p>
+</li>
+<li>
+<p>加密解密过程：</p>
+<ul>
+<li><code>明文-&gt;密钥加密-&gt;密文</code>，</li>
+<li><code>密文-&gt;密钥解密-&gt;明文</code>。</li>
+</ul>
+</li>
+<li>
+<p>优点：算法公开、计算量少、加密速度快、加密效率高、适合大批量数据加密；</p>
+</li>
+<li>
+<p>缺点：双方使用相同的密钥，密钥传输的过程不安全，易被破解，因此为了保密其密钥需要经常更换。</p>
+</li>
+</ul>
+<blockquote>
+<p>AES：AES又称高级加密标准，是下一代的加密算法标准，支持128、192、256位密钥的加密，加密和解密的密钥都是同一个。iOS一般使用ECB模式，16字节128位密钥。</p>
+</blockquote>
+<p>AES算法主要包括三个方面：<strong>轮变化</strong>、<strong>圈数</strong>和<strong>密钥扩展</strong>。</p>
+<ul>
+<li>优点：高性能、高效率、灵活易用、安全级别高。</li>
+<li>缺点：加密与解密的密钥相同，所以前后端利用AES进行加密的话，如何安全保存密钥就成了一个问题。</li>
+</ul>
+<blockquote>
+<p>DES：数据加密标准，DES算法的入口参数有三个：<code>Key</code>、<code>Data</code>、<code>Mode</code>。</p>
+</blockquote>
+<ul>
+<li>其中Key为7个字节共56位，是DES算法的工作密钥；Data为8个字节64位，是要被加密或被解密的数据；Mode为DES的工作方式，有两种：<strong>加密、解密</strong>。</li>
+<li>缺点：与AES相比，安全性较低。</li>
+</ul>
+<blockquote>
+<p>3DES：3DES是DES加密算法的一种模式，它使用3条64位的密钥对数据进行三次加密。是DES向AES过渡的加密算法，是DES的一个更安全的变形。它以DES为基本模块，通过组合分组方法设计出分组加密算法。</p>
+</blockquote>
+<p><strong>2.非对称加密:RSA加密</strong></p>
+<ul>
+<li>非对称加密算法需要成对出现的两个密钥，公开密钥(<code>publickey</code>) 和私有密钥(<code>privatekey</code>) 。</li>
+<li>**加密解密过程：**对于一个私钥，有且只有一个与之对应的公钥。生成者负责生成私钥和公钥，并保存私钥，公开公钥。</li>
+</ul>
+<blockquote>
+<p>公钥加密，私钥解密；或者私钥数字签名，公钥验证。公钥和私钥是成对的，它们互相解密。</p>
+</blockquote>
+<ul>
+<li><strong>特点：</strong>
+<ul>
+<li>1). **对信息保密，防止中间人攻击：**将明文通过接收人的公钥加密，传输给接收人，因为只有接收人拥有对应的私钥，别人不可能拥有或者不可能通过公钥推算出私钥，所以传输过程中无法被中间人截获。只有拥有私钥的接收人才能阅读。<strong>此方法通常用于交换对称密钥</strong>。</li>
+<li>2). **身份验证和防止篡改：**权限狗用自己的私钥加密一段授权明文，并将授权明文和加密后的密文，以及公钥一并发送出来，接收方只需要通过公钥将密文解密后与授权明文对比是否一致，就可以判断明文在中途是否被篡改过。<strong>此方法用于数字签名。</strong></li>
+</ul>
+</li>
+<li>**优点：**加密强度小，加密时间长，常用于数字签名和加密密钥、安全性非常高、解决了对称加密保存密钥的安全问题。</li>
+<li>**缺点：**加密解密速度远慢于对称加密，不适合大批量数据加密。</li>
+</ul>
+<p><strong>3. 哈希算法加密：<code>MD5加密</code>、<code>.SHA加密</code>、<code>HMAC加密</code></strong></p>
+<ul>
+<li>哈希算法加密是通过哈希算法对数据加密，加密后的结果不可逆，即加密后不能再解密。</li>
+<li>**特点：**不可逆、算法公开、相同数据加密结果一致。</li>
+<li>**作用：**信息摘要，信息“指纹”，用来做数据识别的。如：用户密码加密、文件校验、数字签名、鉴权协议。</li>
+</ul>
+<blockquote>
+<p>MD5加密：**对不同的数据加密的结果都是定长的32位字符。</p>
+</blockquote>
+<blockquote>
+<p>**.SHA加密：**安全哈希算法，主要适用于数字签名标准(<code>DSS</code>)里面定义的数字签名算法(DSA)。对于长度小于<code>2^64</code>位的消息，<code>SHA1</code>会产生一个160位的消息摘要。当接收到消息的时候，这个消息摘要可以用来验证数据的完整性。在传输的过程中，数据很可能会发生变化，那么这时候就会产生不同的消息摘要。当然除了<code>SHA1</code>还有<code>SHA256</code>以及<code>SHA512</code>等。</p>
+</blockquote>
+<blockquote>
+<p>**HMAC加密：**给定一个密钥，对明文加密，做两次“散列”，得到的结果还是32位字符串。</p>
+</blockquote>
+<p><strong>4. Base64加密</strong></p>
+<ul>
+<li>
+<p>一种编码方式，严格意义上来说不算加密算法。其作用就是将二进制数据编码成文本，方便网络传输。</p>
+</li>
+<li>
+<p>用 <code>base64</code> 编码之后，数据长度会变大，增加了大约 1/3，但是好处是编码后的数据可以直接在邮件和网页中显示；</p>
+</li>
+<li>
+<p>虽然 <code>base64</code> 可以作为加密，但是 <code>base64</code> 能够逆运算，非常不安全！</p>
+</li>
+<li>
+<p>base64 编码有个非常显著的特点，末尾有个 ‘=’ 号。</p>
+</li>
+<li>
+<p><strong>原理：</strong></p>
+<ul>
+<li>1). 将所有字符转化为ASCII码；</li>
+<li>2). 将ASCII码转化为8位二进制；</li>
+<li>3). 将二进制三位一组不足补0，共24位，再拆分成6位一组共四组；</li>
+<li>4). 统一在6位二进制前补两个0到八位；</li>
+<li>5). 将补0后的二进制转为十进制；</li>
+<li>6). 最后从Base64编码表获取十进制对应的Base64编码。</li>
+</ul>
+</li>
+</ul>
+
+                        
+                      </div>
+                  </div>
+                </a>
+                <div class="read-more clearfix">
+                  <div class="more-left left">
+                  
+                    <span class="date">2024/07/24</span>
+                    <span>posted in&nbsp;</span> 
+          				  
+          					    <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+          				   
+                  </div>
+                  <div class="more-right right">
+                  <span class="comments">
+                      
+
+                       
+                  </span>
+                  </div>
+                </div>
+              </div><!-- article -->
+        
+              
+
+
+			<div class="row">
+			  <div class="large-6 columns">
+			  <p class="text-left" style="padding-top:25px;">
+			   <a href="all_20.html">&laquo; Prev Page</a>  
+			  </p>
+			  </div>
+			  <div class="large-6 columns">
+			<p class="text-right" style="padding-top:25px;">
+			 <a href="all_22.html">&raquo; Next Page</a> 
+			</p>
+			  </div>
+			</div>
+		</div>
+	</div><!-- large 8 -->
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

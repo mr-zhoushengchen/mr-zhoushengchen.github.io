@@ -1,0 +1,384 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  网络TCP协议，三次握手 - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>网络TCP协议，三次握手</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2024/07/24</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p><code>TCP</code>是传输控制协议，具有面向连接、可靠传输、点到点通信、全双工服务等特点，TCP侧重可靠传输。<br />
+<code>UDP</code>是用户数据报协议，具有非连接的、不可靠的、点到多点的通信等特点，UDP侧重快速传输。</p>
+<p><strong>TCP/IP协议：</strong><code>TCP/IP</code>不是一个协议，而是一个协议簇的统称。通常使用的网络是在TCP/IP协议簇的基础上运行的。<strong>应用层</strong>的<code>HTTP</code>、<code>DNS</code>、<code>FTP</code>，<strong>传输层</strong>的<code>TCP</code>(传输控制协议)、<code>UDP</code>(用户数据报协议)，<strong>网络层</strong>的<code>IP</code>等等都属于它内部的一个子集。</p>
+<p><strong>TCP报文重点字段：</strong><br />
+<code>序号</code>：Seq序号，占32位，用来标识从TCP源端向目的端发送的字节流，发起方发送数据时对此进行标记。<br />
+<code>确认序号</code>：Ack序号，占32位，只有ACK标志位为1时，确认序号字段才有效，Ack=Seq+1。<br />
+<code>标志位</code>：共6个，即URG、ACK、PSH、RST、SYN、FIN等，具体含义如下：</p>
+<ul>
+<li>（A）<code>URG</code>：紧急指针（urgent pointer）有效。</li>
+<li>（B）<code>ACK</code>：确认序号有效。</li>
+<li>（C）<code>PSH</code>：接收方应该尽快将这个报文交给应用层。</li>
+<li>（D）<code>RST</code>：重置连接。</li>
+<li>（E）<code>SYN</code>：发起一个新连接。</li>
+<li>（F）<code>FIN</code>：释放一个连接。</li>
+</ul>
+<p>TCP是面向连接的协议，建立连接需要经过**<code>三次握手</code>：**</p>
+<ul>
+<li>
+<p>1.首先客户端将<code>标志位SYN置为1</code>，然后随机产生一个<code>序号seq=J</code>，将数据包发送给服务端，客户端进入<code>SYN_SENT</code>状态，等待服务端确认。</p>
+</li>
+<li>
+<p>2.服务器收到数据包后由<code>标志位SYN=1</code>知道Client请求建立连接，Server将<code>标志位SYN和ACK都置为1</code>，<code>确认序号ack=J+1</code>，随机产生一个<code>序号seq=K</code>，并将该数据包发送给服务端确认连接请求，服务端进入<code>SYN_RCVD</code>状态。</p>
+</li>
+<li>
+<p>3.客户端收到确认后，检查<code>确认序号ack是否为J+1</code>，<code>标志位ACK是否为1</code>，确认正确后将<code>标志位ACK=1</code>和<code>确认序号ack=K+1</code>数据包发送给服务端，服务端检查<code>标志位ACK为1</code>、<code>确认序号ack=K+1</code>成功后，客户端和服务端进入<code>ESTABLISHED</code>(建立连接)状态，完成三次握手，两端可以进行数据传输。</p>
+</li>
+</ul>
+<p>TCP断开连接需要经过**<code>四次挥手</code>：**</p>
+<ul>
+<li>
+<p>1.首先客户端向服务端发送<code>释放连接的标志位 FIN</code>，客户端进入<code>FIN_WAIT_1</code>状态，等待服务端确认。</p>
+</li>
+<li>
+<p>2.服务端收到<code>标志位FIN</code>后发送<code>确认标志位ACK</code>给客户端，确认序号为<code>收到序号+1</code>(与SYN相同，一个FIN占用一个序号)，服务端进入<code>CLOSE_WAIT</code>状态。</p>
+</li>
+<li>
+<p>3.服务端发送自己的<code>释放连接的标志位 FIN</code>。服务端进入<code>LAST_ACK</code>状态。</p>
+</li>
+<li>
+<p>4.客户端收到<code>标志位FIN</code>后进入<code>TIME_WAIT</code>状态，然后发送一个<code>确认标志位ACK</code>给服务端，确认序号为<code>收到序号+1</code>，服务端进入<code>CLOSED</code>状态，完成四次挥手。</p>
+</li>
+</ul>
+<p>**客户端进入<code>TIME_WAIT</code>状态而不是直接进入<code>CLOSED</code>状态是因为：**我们必须要假想网络是不可靠的，你无法保证你最后发送的<code>ACK报文</code>一定会被对方收到，因此对方处于<code>LAST_ACK</code>状态下的<code>SOCKET</code>可能会因为超时未收到<code>ACK</code>报文，而重发FIN报文，所以这个<code>TIME_WAIT</code>状态的作用就是用来重发可能丢失的<code>ACK</code>报文。</p>
+<p><strong>为什么不能用两次握手进行连接？</strong></p>
+<blockquote>
+<p>因为三次握手是为了双方都知道彼此已做好准备，如果改成两次握手，会发生死锁。假设客户端给服务端发送连接请求，服务端收到后发送确认连接给客户端，如果两次握手的话此时服务端会认为已经建立了连接，可以发送数据了，但是如果确认连接数据丢失，客户端还不知道已经建立了连接，会一直等待确认连接序号，导致数据传输超时，服务端重复发送同样的数据，造成死锁。</p>
+</blockquote>
+<p><strong>为什么是四次挥手而不是三次？</strong></p>
+<p>因为TCP是全双工连接，关闭连接需要双向确认关闭才算是真正的关闭，否则未关闭一方仍可以继续发送数据。</p>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="17218115416529.html" 
+          title="Previous Post: HTTPS的加密原理">&laquo; HTTPS的加密原理</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="17218115035392.html" 
+          title="Next Post: 通知，能不能跨线程">通知，能不能跨线程 &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

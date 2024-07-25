@@ -1,0 +1,439 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+	$(function(){
+		$('#menu_item_index').addClass('is_active');
+	});
+</script>
+<div class="row">
+	<div class="large-8 medium-8 columns">
+		<div class="markdown-body home-categories">
+		
+			<div class="article">
+                <a class="clearlink" href="17218116241379.html">
+                
+                  <h1>runtime</h1>
+                  <div class="a-content">
+                      
+                      <div class="a-content-text">
+                        
+                        	<p><strong>什么是runtime？</strong></p>
+<p>runtime 一套c、c++、汇编编写的API，为OC提供运行时功能。能够将数据类型的确定由编译期推迟到运行时。</p>
+<p><strong>问1：方法的本质，问2：runtime的消息机制</strong></p>
+<p><strong>方法的本质其实就是发送消息</strong>。</p>
+<p>发送消息主要流程：</p>
+<ul>
+<li>
+<ol>
+<li>快速查找：<code>objc_msgSend</code>查找<code>cache_t</code>缓存消息</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>慢速查找：递归自己和父类查找方法<code>lookUpImpOrForward</code></li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>查找不到消息，进行动态方法解析：<code>resolveInstanceMethod</code></li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>消息快速转发：<code>forwardingTargetForSelector</code></li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>消息慢速转发：消息签名<code>methodSignatureForSelector</code>和分发<code>forwardInvocation</code></li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li>最终仍未找到消息：程序crash，报经典错误信息<code>unrecognized selector sent to instance xxx</code></li>
+</ol>
+</li>
+</ul>
+<p><strong>SEL是什么？IMP是什么？两者有什么联系？</strong></p>
+<ul>
+<li>
+<p><code>SEL</code>是方法编号，即方法名称，在dyld加载镜像时，通过read_image方法加载到内存的表中了。</p>
+</li>
+<li>
+<p><code>IMP</code>是函数实现指针，找IMP就是找函数的过程</p>
+</li>
+<li>
+<p><strong>两者的关系：</strong><code>sel</code>相当于书本的目录标题，<code>imp</code>就是书本的页码。查找具体的函数就是想看这本书里面具体篇章的内容：</p>
+<ul>
+<li>
+<p>1). 我们首先知道想看什么，也就是title -sel</p>
+</li>
+<li>
+<p>2). 然后根据目录对应的页码 -imp</p>
+</li>
+<li>
+<p>3). 打开具体的内容 -方法的具体实现</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>runtime应用：</strong></p>
+<ul>
+<li>
+<p>1.方法的交换：具体应用拦截系统自带的方法调用（Method Swizzling黑魔法）</p>
+</li>
+<li>
+<p>2.实现给分类增加属性</p>
+</li>
+<li>
+<p>3.实现字典的模型和自动转换</p>
+</li>
+<li>
+<p>4.JSPatch替换已有的OC方法实行等</p>
+</li>
+<li>
+<p>5.aspect 切面编程</p>
+</li>
+</ul>
+<p><strong>能否向编译后得到的类中增加实例变量？能否向运行时创建的类中添加实例变量？为什么？</strong></p>
+<ul>
+<li>
+<p>1.不能向编译后得到的类中增加实例变量。</p>
+</li>
+<li>
+<p>2.可以向运行时创建的类中添加实例变量。</p>
+</li>
+<li>
+<p>3.因为编译后的类已经注册在 runtime 中，类结构体中的 <code>objc_ivar_list</code><strong>实例变量的链表</strong>和 <code>instance_size</code> <strong>实例变量的内存大小</strong>已经确定，同时<code>runtime</code>会调用 <code>class_setIvarLayout</code>或<code>class_setWeakIvarLayout</code>来处理 <code>strong</code>、<code>weak</code>引用，所以不能向存在的类中添加实例变量。</p>
+</li>
+</ul>
+<p>运行时创建的类是<strong>可以添加实例变量</strong>，调用<code>class_addIvar</code>函数。但是得在调用<code>objc_allocateClassPair</code>之后，<code>objc_registerClassPair</code>之前，原因同上。</p>
+<p><strong>Category中添加属性和成员变量的区别</strong></p>
+<ul>
+<li>
+<ol>
+<li><code>Category</code>它的主要作用是在不改变原有类的前提下，动态地给这个类添加一些方法。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>分类的结构体指针中，没有属性列表，只有方法列表。原则上它只能添加方法，不能添加属性(成员变量)，但是可以借助运行时关联对象<code>objc_setAssociatedObject(self, @selector(name), name, OBJC_ASSOCIATION_COPY_NONATOMIC);</code>、<code>objc_getAssociatedObject(self,@selector(name));</code>。</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>分类中的可以写<code>@property</code>，但不会生成setter/getter方法声明和实现，也不会生成私有的成员变量，会编译通过，但是引用变量会报错。</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>如果分类中有和原有类同名的方法，会优先调用分类中的方法，就是说会忽略原有类的方法，同名方法调用的优先级为 分类 本类 父类，因为方法是放在方法栈中，遵循先进后出原则；</li>
+</ol>
+</li>
+</ul>
+
+                        
+                      </div>
+                  </div>
+                </a>
+                <div class="read-more clearfix">
+                  <div class="more-left left">
+                  
+                    <span class="date">2024/07/24</span>
+                    <span>posted in&nbsp;</span> 
+          				  
+          					    <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+          				   
+                  </div>
+                  <div class="more-right right">
+                  <span class="comments">
+                      
+
+                       
+                  </span>
+                  </div>
+                </div>
+              </div><!-- article -->
+        
+              
+
+
+			<div class="row">
+			  <div class="large-6 columns">
+			  <p class="text-left" style="padding-top:25px;">
+			   <a href="all.html">&laquo; Prev Page</a>  
+			  </p>
+			  </div>
+			  <div class="large-6 columns">
+			<p class="text-right" style="padding-top:25px;">
+			 <a href="all_2.html">&raquo; Next Page</a> 
+			</p>
+			  </div>
+			</div>
+		</div>
+	</div><!-- large 8 -->
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

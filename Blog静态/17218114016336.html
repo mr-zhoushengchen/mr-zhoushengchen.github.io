@@ -1,0 +1,467 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  ReactiveCocoa的使用及优缺点 - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>ReactiveCocoa的使用及优缺点</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2024/07/24</span>
+
+          
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <blockquote>
+<p><strong>ReactiveCocoa</strong>简称RAC，是函数响应式编程框架，因为它具有函数式编程和响应式编程的特性。</p>
+</blockquote>
+<ul>
+<li>
+<p>由于该框架的编程思想，使得它具有相当魅惑人心的功能，它能实现传统设计模式和事件监听所能实现的功能，比如<strong>KVO、通知、block回调、action、协议</strong>等等，它的全面性并不是它最为优越的特色，RAC最值得炫耀的是它提供了统一的消息传递机制，这种机制使得它的代码更加的简洁，同一功能代码块更少，这正是符合了我们编程的思想：高聚合、低耦合，它非常适合MVVM设计模式的开发。</p>
+</li>
+<li>
+<p>不过它也并不能完全取代传统的编码方式，在多人开发和代码维护方面，RAC还是有着一些让人头痛的问题。</p>
+</li>
+</ul>
+<p>**优点：**使用灵活方便、代码简洁、逻辑清晰</p>
+<p>**缺点：**维护成本较高、问题溯源困难</p>
+<p><strong>使用：</strong></p>
+<p>RAC的统一消息传递机制，其所以动作都离不开<code>信号(sigal)</code>。</p>
+<ul>
+<li>1). <strong>信号的创建、发送、接收</strong></li>
+</ul>
+<pre><code class="language-plain_text">// 创建  此时为冷信号，并不会被触发
+RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscribersubscriber) {  
+    // 发送信号  
+    [subscriber sendNext:@&quot;oh my god&quot;];  
+    // 回收资源。注意：手动创建一个signal一定要记得回收资源，不然程序会崩溃
+    return [RACDisposable disposableWithBlock:^{  
+        NSLog(@&quot;信号发送完成&quot;);  
+    }];  
+}];  
+// 订阅信号后才会变为热信号，可以被触发
+[signal subscribeNext:^(id x) {  
+    NSLog(@&quot;singalContent:%@&quot;, x);  
+}];  
+</code></pre>
+<ul>
+<li>2). <strong>RAC的ControlEvents</strong><br />
+这个方法可以简单的实现监听操作，并且逻辑在其后的<code>block</code>中处理，而且也能添加手势并进行监听。</li>
+</ul>
+<pre><code class="language-plain_text">[[self.textField rac_signalForControlEvents:UIControlEventEditingDidBegin] subscribeNext:^(id x) {  
+    NSLog(@&quot;%@&quot;, x);  
+}];  
+
+UITapGestureRecognizer *tap = [UITapGestureRecognizer new];  
+[[tap rac_gestureSignal] subscribeNext:^(id x) {  
+    NSLog(@&quot;three:%@&quot;, x);  
+}];  
+[self.view addGestureRecognizer:tap];  
+</code></pre>
+<ul>
+<li>3). <strong>RAC的KVO</strong></li>
+</ul>
+<pre><code class="language-plain_text">[[self.textField rac_valuesAndChangesForKeyPath:@&quot;text&quot; options:NSKeyValueObservingOptionNew observer:self] subscribeNext:^(id x) {  
+    NSLog(@&quot;%@&quot;, x);  
+}];  
+</code></pre>
+<ul>
+<li>4). <strong>RAC的通知</strong></li>
+</ul>
+<pre><code class="language-plain_text">[[[NSNotificationCenter defaultCenter] rac_addObserverForName:UIKeyboardDidShowNotification object:nil] subscribeNext:^(id x) {  
+    NSLog(@&quot;键盘弹起&quot;);  
+}];  
+</code></pre>
+<ul>
+<li>5). <strong>RAC的协议</strong></li>
+</ul>
+<pre><code class="language-plain_text">- (void)viewDidLoad {  
+    [super viewDidLoad];  
+    // 代理  
+    self.textField.delegate = self;  
+    [[self rac_signalForSelector:@selector(textFieldDidBeginEditing:) fromProtocol:@protocol(UITextFieldDelegate)] subscribeNext:^(id x) {  
+        NSLog(@&quot;打印点击信息:%@&quot;, x);  
+    }];  
+}  
+- (void)textFieldDidBeginEditing:(UITextField *)textField {  
+    NSLog(@&quot;开始编辑了&quot;);  
+}  
+</code></pre>
+<ul>
+<li>6). <strong>RAC遍历数组和字典</strong></li>
+</ul>
+<p>相当于枚举遍历，但是效率相比更高</p>
+<pre><code class="language-plain_text">NSArray *arr = @[@&quot;1&quot;, @&quot;2&quot;, @&quot;3&quot;, @&quot;4&quot;, @&quot;5&quot;];  
+[arr.rac_sequence.signal subscribeNext:^(id x) {  
+    NSLog(@&quot;arr : %@&quot;, x);  
+}];  
+NSDictionary *dic = @{@&quot;name&quot;:@&quot;yangBo&quot;, @&quot;age&quot;:@&quot;19&quot;};  
+[dic.rac_sequence.signal subscribeNext:^(id x) {  
+    NSLog(@&quot;dic : %@&quot;, x);  
+}];  
+</code></pre>
+<ul>
+<li>7). <strong>RAC信号处理（map、filter、combine）</strong></li>
+</ul>
+<p>① 对信号不做处理</p>
+<pre><code class="language-plain_text">[[self.textField rac_textSignal] subscribeNext:^(id x) {  
+    NSLog(@&quot;doNothing:%@&quot;, x);  
+}];  
+</code></pre>
+<p>② 对信号进行过滤（filter）<br />
+可以对信号进行条件判断是否处理。</p>
+<pre><code class="language-plain_text">[[[self.textField rac_textSignal] filter:^BOOL(NSString* value) {
+    if (value.length 3) {
+        return YES;
+    }
+    return NO;
+}] subscribeNext:^(id x) {
+    NSLog(@&quot;filter:%@&quot;, x);
+}];
+</code></pre>
+<p>③ 对信号进行映射（map）<br />
+映射也可以理解为<strong>转换</strong>，第一个block返回的是id类型，如果返回<code>&quot;map now&quot;</code>，就相当于信号转换，第二个block打印的值就是你return的值<code>&quot;map now&quot;</code>。</p>
+<pre><code class="language-plain_text">[[[self.textField rac_textSignal] map:^id(NSString* value) {
+    if (value.length 3) {
+        return @&quot;map now&quot;;
+    }
+    return value;
+}] subscribeNext:^(id x) {
+    NSLog(@&quot;map:%@&quot;, x);
+}];
+</code></pre>
+<p>④ <strong>信号的联合（combine）</strong></p>
+<pre><code class="language-plain_text">// 创建需要联合的信号
+RACSignal *firstCombineSignal = [self.textField rac_textSignal];
+RACSignal *secondeCombineSignal = [tap rac_gestureSignal];
+// 信号联合处理返回self.label的背景色
+RAC(self.label, backgroundColor) = [RACSignal combineLatest:@[firstCombineSignal, secondeCombineSignal] reduce:^id(NSString *text, UITapGestureRecognizer * tap){
+    // 这里进行信号逻辑判断和处理
+    if (text.length == 3 &amp;&amp; tap.state == UIGestureRecognizerStateEnded) {
+        return [UIColor redColor];
+    }
+    return [UIColor cyanColor];
+}];
+</code></pre>
+<p>⑤ <strong>信号关联</strong></p>
+<pre><code class="language-plain_text">RAC(self.label, text) = [self.textField rac_textSignal];
+</code></pre>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="17218114171616.html" 
+          title="Previous Post: 类的继承，类能否多继承，协议能不能做继承">&laquo; 类的继承，类能否多继承，协议能不能做继承</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="17218113793678.html" 
+          title="Next Post: 架构设计">架构设计 &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>

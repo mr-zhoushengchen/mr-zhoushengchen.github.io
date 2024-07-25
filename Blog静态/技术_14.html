@@ -1,0 +1,494 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  技术 - 水止君
+  
+  </title>
+  
+  
+  
+  <link href="atom.xml" rel="alternate" title="水止君" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  
+   <link rel="shortcut icon" href="media/17218128111568/icon.png">
+  
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:platojobs.cn ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 水止君</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="%E6%8A%80%E6%9C%AF.html">技术</a></li>
+        
+            <li><a href="%E9%98%85%E8%AF%BB.html">阅读</a></li>
+        
+            <li><a href="%E6%96%87%E6%91%98.html">文摘</a></li>
+        
+            <li><a href="%E6%88%91%E7%9A%84.html">我的</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+	$(function(){
+		$('#menu_item_index').addClass('is_active');
+	});
+</script>
+<div class="row">
+	<div class="large-8 medium-8 columns">
+		<div class="markdown-body home-categories">
+		
+			<div class="article">
+                <a class="clearlink" href="17218109761033.html">
+                
+                  <h1>排序题：冒泡排序，选择排序，插入排序，快速排序（二路，三路）能写出那些？</h1>
+                  <div class="a-content">
+                      
+                      <div class="a-content-text">
+                        
+                        	<p>这里简单的说下几种快速排序的不同之处，随机快排，是为了解决在近似有序的情况下，时间复杂度会退化为<code>O(n^2)</code>,双路快排是为了解决快速排序在大量数据重复的情况下，时间复杂度会退化为<code>O(n^2)</code>，三路快排是在大量数据重复的情况下，对双路快排的一种优化。</p>
+<ul>
+<li>冒泡排序</li>
+</ul>
+<pre><code class="language-plain_text">extension Array where Element : Comparable{
+    public mutating func bubbleSort() {
+        let count = self.count
+        for i in 0..&lt;count {
+            for j in 0..&lt;(count - 1 - i) {
+                if self[j] &gt; self[j + 1] {
+                    (self[j], self[j + 1]) = (self[j + 1], self[j])
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>选择排序</li>
+</ul>
+<pre><code class="language-plain_text">extension Array where Element : Comparable{
+    public mutating func selectionSort() {
+        let count = self.count
+        for i in 0..&lt;count {
+            var minIndex = i
+            for j in (i+1)..&lt;count {
+                if self[j] &lt; self[minIndex] {
+                    minIndex = j
+                }
+            }
+            (self[i], self[minIndex]) = (self[minIndex], self[i])
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>插入排序</li>
+</ul>
+<pre><code class="language-plain_text">extension Array where Element : Comparable{
+    public mutating func insertionSort() {
+        let count = self.count
+        guard count &gt; 1 else { return }
+        for i in 1..&lt;count {
+            var preIndex = i - 1
+            let currentValue = self[i]
+            while preIndex &gt;= 0 &amp;&amp; currentValue &lt; self[preIndex] {
+                self[preIndex + 1] = self[preIndex]
+                preIndex -= 1
+            }
+            self[preIndex + 1] = currentValue
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>快速排序</li>
+</ul>
+<pre><code class="language-plain_text">extension Array where Element : Comparable{
+    public mutating func quickSort() {
+        func quickSort(left:Int, right:Int) {
+            guard left &lt; right else { return }
+            var i = left + 1,j = left
+            let key = self[left]
+            while i &lt;= right {
+                if self[i] &lt; key {
+                    j += 1
+                    (self[i], self[j]) = (self[j], self[i])
+                }
+                i += 1
+            }
+            (self[left], self[j]) = (self[j], self[left])
+            quickSort(left: j + 1, right: right)
+            quickSort(left: left, right: j - 1)
+        }
+        quickSort(left: 0, right: self.count - 1)
+    }
+}
+</code></pre>
+<ul>
+<li>随机快排</li>
+</ul>
+<pre><code class="language-plain_text">extension Array where Element : Comparable{
+    public mutating func quickSort1() {
+        func quickSort(left:Int, right:Int) {
+            guard left &lt; right else { return }
+            let randomIndex = Int.random(in: left...right)
+            (self[left], self[randomIndex]) = (self[randomIndex], self[left])
+            var i = left + 1,j = left
+            let key = self[left]
+            while i &lt;= right {
+                if self[i] &lt; key {
+                    j += 1
+                    (self[i], self[j]) = (self[j], self[i])
+                }
+                i += 1
+            }
+            (self[left], self[j]) = (self[j], self[left])
+            quickSort(left: j + 1, right: right)
+            quickSort(left: left, right: j - 1)
+        }
+        quickSort(left: 0, right: self.count - 1)
+    }
+}
+</code></pre>
+<ul>
+<li>双路快排</li>
+</ul>
+<pre><code class="language-plain_text">extension Array where Element : Comparable{
+    public mutating func quickSort2() {
+        func quickSort(left:Int, right:Int) {
+            guard left &lt; right else { return }
+            let randomIndex = Int.random(in: left...right)
+            (self[left], self[randomIndex]) = (self[randomIndex], self[left])
+            var l = left + 1, r = right
+            let key = self[left]
+            while true {
+                while l &lt;= r &amp;&amp; self[l] &lt; key {
+                    l += 1
+                }
+                while l &lt; r &amp;&amp; key &lt; self[r]{
+                    r -= 1
+                }
+                if l &gt; r { break }
+                (self[l], self[r]) = (self[r], self[l])
+                l += 1
+                r -= 1
+            }
+            (self[r], self[left]) = (self[left], self[r])
+            quickSort(left: r + 1, right: right)
+            quickSort(left: left, right: r - 1)
+        }
+        quickSort(left: 0, right: self.count - 1)
+    }
+}
+</code></pre>
+<ul>
+<li>三路快排</li>
+</ul>
+<pre><code class="language-plain_text">// 三路快排
+extension Array where Element : Comparable{
+    public mutating func quickSort3() {
+        func quickSort(left:Int, right:Int) {
+            guard left &lt; right else { return }
+            let randomIndex = Int.random(in: left...right)
+            (self[left], self[randomIndex]) = (self[randomIndex], self[left])
+            var lt = left, gt = right
+            var i = left + 1
+            let key = self[left]
+            while i &lt;= gt {
+                if self[i] == key {
+                    i += 1
+                }else if self[i] &lt; key{
+                    (self[i], self[lt + 1]) = (self[lt + 1], self[i])
+                    lt += 1
+                    i += 1
+                }else {
+                    (self[i], self[gt]) = (self[gt], self[i])
+                    gt -= 1
+                }
+                
+            }
+            (self[left], self[lt]) = (self[lt], self[left])
+            quickSort(left: gt + 1, right: right)
+            quickSort(left: left, right: lt - 1)
+        }
+        quickSort(left: 0, right: self.count - 1)
+    }
+}
+</code></pre>
+
+                        
+                      </div>
+                  </div>
+                </a>
+                <div class="read-more clearfix">
+                  <div class="more-left left">
+                  
+                    <span class="date">2024/07/24</span>
+                    <span>posted in&nbsp;</span> 
+          				  
+          					    <span class="posted-in"><a href='%E6%8A%80%E6%9C%AF.html'>技术</a></span>
+          				   
+                  </div>
+                  <div class="more-right right">
+                  <span class="comments">
+                      
+
+                       
+                  </span>
+                  </div>
+                </div>
+              </div><!-- article -->
+        
+              
+
+
+			<div class="row">
+			  <div class="large-6 columns">
+			  <p class="text-left" style="padding-top:25px;">
+			   <a href="技术_13.html">&laquo; Prev Page</a>  
+			  </p>
+			  </div>
+			  <div class="large-6 columns">
+			<p class="text-right" style="padding-top:25px;">
+			 <a href="技术_15.html">&raquo; Next Page</a> 
+			</p>
+			  </div>
+			</div>
+		</div>
+	</div><!-- large 8 -->
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/17218128111568/header.jpg" /></div>
+            
+                <h1>水止君</h1>
+                <div class="site-des">水止以静，而后存之。一生一。二静至静，天道无常。至今为。</div>
+                <div class="social">
+
+
+
+
+
+
+
+
+<a target="_blank" class="twitter" target="_blank" href="https://x.com/platojobs" title="Twitter">Twitter</a>
+
+
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="%E6%8A%80%E6%9C%AF.html"><strong>技术</strong></a>
+        
+            <a href="%E9%98%85%E8%AF%BB.html"><strong>阅读</strong></a>
+        
+            <a href="%E6%96%87%E6%91%98.html"><strong>文摘</strong></a>
+        
+            <a href="%E6%88%91%E7%9A%84.html"><strong>我的</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="17218116364930.html">isa指针</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218116241379.html">runtime</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115915749.html">runloop</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115735673.html">事件传递和响应机制</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="17218115565113.html">WebSocket与TCP Socket的区别</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    
+
+
+
+  </body>
+</html>
